@@ -61,12 +61,6 @@
       ansible.builtin.systemd:
         daemon-reload: true
 
-    - name: start and enable user
-      ansible.builtin.service:
-        name: user
-        state: started
-        enabled: 'yes'
-
     - name: copy file mongo.repo to yum.repos.d
       ansible.builtin.copy:
         src: mongo.repo
@@ -76,6 +70,12 @@
       ansible.builtin.yum:
         name: mongodb-org-shell
         state: installed
-        
+
     - name: load user data
       ansible.builtin.command: mongo --host MONGODB-SERVER-IPADDRESS < /app/schema/user.js
+    
+    - name: start and enable user
+      ansible.builtin.service:
+        name: user
+        state: started
+        enabled: 'yes'
